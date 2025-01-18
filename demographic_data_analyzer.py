@@ -2,10 +2,9 @@ import pandas as pd
 import numpy as np
 
 def calculate_demographic_data(print_data=True):
-    # Read data from file
     df = pd.read_csv('adult.data.csv')
 
-    # How many of each race are represented in this dataset? This should be a Pandas series with race names as the index labels.
+    
     races = pd.unique(df['race'])
     racecount = {r:0 for r in races}
     for i in range(len(df['race'])):
@@ -13,7 +12,6 @@ def calculate_demographic_data(print_data=True):
             racecount[df.iloc[i,8]]+=1
     race_count=pd.Series(data = racecount, index = races)
 
-    # What is the average age of men?
     sexes = pd.unique(df['sex'])
     sexcount = 0
     agesum = 0
@@ -23,7 +21,7 @@ def calculate_demographic_data(print_data=True):
             agesum+=df.iloc[i,0]
     average_age_men = np.round(agesum/sexcount,1)
 
-    # What is the percentage of people who have a Bachelor's degree?
+    
     eds = pd.unique(df['education'])
     edscount = {e:0 for e in eds}
     adved = ['Bachelors','Masters','Doctorate']
@@ -41,17 +39,12 @@ def calculate_demographic_data(print_data=True):
     pplwadved = edscount['Bachelors']+edscount['Masters']+edscount['Doctorate']
     pplwoadved = len(df['sex']) - pplwadved
 
-    # What percentage of people with advanced education (`Bachelors`, `Masters`, or `Doctorate`) make more than 50K?
-    # What percentage of people without advanced education make more than 50K?
-
-    # with and without `Bachelors`, `Masters`, or `Doctorate`
+    
     percentage_bachelors = np.round(edscount['Bachelors']/len(df['sex'])*100,1)
     higher_education_rich = np.round(payclassadved['with']/pplwadved*100,1)
     lower_education_rich = np.round(payclassadved['without']/pplwoadved*100,1)
 
-    # percentage with salary >50K
     
-    # What is the minimum number of hours a person works per week (hours-per-week feature)?
     min_hours = 100000000
     for i in range(len(df['hours-per-week'])):
         if int(df.iloc[i,12])<min_hours:
@@ -64,12 +57,10 @@ def calculate_demographic_data(print_data=True):
             if df.iloc[i,14] == '>50K':
                 rich_min+=1
     
-    # What percentage of the people who work the minimum number of hours per week have a salary of >50K?
-    #num_min_workers = None
-
+    
     rich_percentage = rich_min/num_min_workers*100
 
-    # What country has the highest percentage of people that earn >50K?
+   
     nations = pd.unique(df['native-country'])
     countrycount = {r:0 for r in nations}
     richincountry = {r:0 for r in nations}
@@ -93,7 +84,7 @@ def calculate_demographic_data(print_data=True):
 
     highest_earning_country_percentage = maxpercent
 
-    # Identify the most popular occupation for those who earn >50K in India.
+    
     occupations = pd.unique(df['occupation'])
     occ_count = {r:0 for r in occupations}
     for i in range(len(df['race'])):
@@ -108,9 +99,8 @@ def calculate_demographic_data(print_data=True):
             pplinjob = occ_count[r]
     top_IN_occupation = job
 
-    # DO NOT MODIFY BELOW THIS LINE
-
-    if print_data:
+    
+if print_data:
         print("Number of each race:\n", race_count) 
         print("Average age of men:", average_age_men)
         print(f"Percentage with Bachelors degrees: {percentage_bachelors}%")
